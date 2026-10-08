@@ -1,0 +1,8 @@
+family,model,average_precision
+Gradient boosting,Boost_depth3,0.2632753865757557
+Linear SVM,LinearSVM_C0.1,0.2541370039089998
+Gaussian Naive Bayes,GaussianNB,0.2449629775537802
+Logistic regression SGA,LogReg_SGA_lr0.001,0.2369454344843752
+RBF SVM,RBFSVM_C1_gammascale,0.2343735761240283
+KNN,KNN_k11,0.2136580689262184
+Decision tree,Tree_depth5,0.20056050200651337

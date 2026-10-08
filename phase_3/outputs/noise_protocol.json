@@ -1,0 +1,13 @@
+{
+  "minority_class": 1,
+  "minority_count": 1180,
+  "flipped_count": 59,
+  "requested_minority_noise_rate": 0.05,
+  "actual_minority_noise_rate": 0.05,
+  "whole_training_corruption_fraction": 0.0059,
+  "seeds": [
+    42,
+    43,
+    44
+  ]
+}

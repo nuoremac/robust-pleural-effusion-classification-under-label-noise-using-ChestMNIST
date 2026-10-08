@@ -1,0 +1,6 @@
+{
+  "Gradient boosting": "Boost_depth3",
+  "Linear SVM": "LinearSVM_C0.1",
+  "RBF SVM": "RBFSVM_C1_gammascale",
+  "Decision tree": "Tree_depth5"
+}

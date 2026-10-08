@@ -1,0 +1,15 @@
+{
+  "python": "3.12.3 (main, Aug 31 2026, 10:18:26) [GCC 13.3.0]",
+  "numpy": "2.5.3",
+  "scikit_learn": "1.9.1",
+  "mlflow": "3.17.0",
+  "seed_repetitions": [
+    42,
+    43,
+    44
+  ],
+  "selection": "Phase II validation AP",
+  "preprocessing": "fixed Phase II training-fitted scaler and PCA(50)",
+  "fit_seconds_scope": "model fit only",
+  "test_used_for_tuning": false
+}

@@ -1,0 +1,25 @@
+{
+  "torch": "2.14.1+cpu",
+  "python": "3.12.3 (main, Aug 31 2026, 10:18:26) [GCC 13.3.0]",
+  "seeds": [
+    42,
+    43,
+    44
+  ],
+  "architecture": [
+    50,
+    64,
+    32,
+    2
+  ],
+  "max_epochs": 50,
+  "learning_rate": 0.001,
+  "batch_size": 256,
+  "checkpoint_selection": "validation AP",
+  "edl_loss": "expected squared error + predictive variance + annealed adjusted-Dirichlet KL",
+  "evidence_activation": "softplus",
+  "reference": "https://arxiv.org/abs/1806.01768",
+  "implementation": "feature-based adaptation, not medical CNN reproduction",
+  "class_weighting": "none",
+  "test_used_for_tuning": false
+}

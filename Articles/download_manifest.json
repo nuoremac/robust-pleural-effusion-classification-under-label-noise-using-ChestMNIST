@@ -1,0 +1,81 @@
+[
+  {
+    "paper": "EDL foundation",
+    "status": "downloaded",
+    "file": "Sensoy_2018_Evidential_Deep_Learning.pdf",
+    "source": "https://arxiv.org/pdf/1806.01768",
+    "resolved_url": "https://arxiv.org/pdf/1806.01768",
+    "bytes": 617879
+  },
+  {
+    "paper": "BoMD",
+    "status": "downloaded",
+    "file": "Chen_2023_BoMD_Noisy_Chest_Xray.pdf",
+    "source": "https://arxiv.org/pdf/2203.01937",
+    "resolved_url": "https://arxiv.org/pdf/2203.01937",
+    "bytes": 6810019
+  },
+  {
+    "paper": "CSEAL 2026 author preprint",
+    "status": "unavailable",
+    "file": null,
+    "attempts": [
+      {
+        "url": "https://d197for5662m48.cloudfront.net/documents/publicationstatus/264152/preprint_pdf/5a70c32f96c68bdaf1c356dbd5e2846f.pdf",
+        "error": "<urlopen error [Errno -5] No address associated with hostname>"
+      }
+    ]
+  },
+  {
+    "paper": "CSEAL 2022 earlier paper",
+    "status": "downloaded",
+    "file": "Balaram_2022_CSEAL_Radiograph_Classification.pdf",
+    "source": "https://arxiv.org/pdf/2209.01858",
+    "resolved_url": "https://arxiv.org/pdf/2209.01858",
+    "bytes": 822941
+  },
+  {
+    "paper": "SVM pleural effusion",
+    "status": "unavailable",
+    "file": null,
+    "attempts": [
+      {
+        "url": "https://europepmc.org/articles/PMC10806747?pdf=render",
+        "error": "HTTP Error 403: Forbidden"
+      },
+      {
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10806747/pdf/main.pdf",
+        "error": "Response is not a PDF (possibly access restriction)."
+      }
+    ]
+  },
+  {
+    "paper": "SNEL",
+    "status": "unavailable",
+    "file": null,
+    "attempts": [
+      {
+        "url": "https://ieeexplore.ieee.org/stampPDF/getPDF.jsp?tp=&arnumber=10413624",
+        "error": "Response is not a PDF (possibly access restriction)."
+      }
+    ]
+  },
+  {
+    "paper": "Low-resolution chest X-ray classification with uncertain labels (2025 arXiv preprint)",
+    "status": "downloaded",
+    "file": "Chest_Xray_Low_Resolution_Uncertain_Labels_2025_Preprint.pdf",
+    "source": "https://arxiv.org/pdf/2504.09033"
+  },
+  {
+    "paper": "SVM pleural effusion \u2014 full article XML",
+    "status": "downloaded_xml_pdf_unavailable",
+    "file": "Widodo_SVM_Pleural_Effusion_FullText.xml",
+    "source": "https://www.ebi.ac.uk/europepmc/webservices/rest/PMC10806747/fullTextXML"
+  },
+  {
+    "paper": "LRC-CXR (2026)",
+    "status": "no_open_pdf_found",
+    "file": null,
+    "source": "https://doi.org/10.1016/j.eswa.2026.131438"
+  }
+]

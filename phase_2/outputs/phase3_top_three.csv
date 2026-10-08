@@ -1,0 +1,4 @@
+family,model,average_precision
+Gradient boosting,Boost_depth3,0.2632753865757557
+Linear SVM,LinearSVM_C0.1,0.2541370039089998
+Gaussian Naive Bayes,GaussianNB,0.2449629775537802
