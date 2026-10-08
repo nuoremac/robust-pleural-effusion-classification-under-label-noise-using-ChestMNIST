@@ -1,0 +1,5 @@
+{
+  "Logistic regression SGA": "LogReg_SGA_lr0.001",
+  "Gaussian Naive Bayes": "GaussianNB",
+  "KNN": "KNN_k11"
+}

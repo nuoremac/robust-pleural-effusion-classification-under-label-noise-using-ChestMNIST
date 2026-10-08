@@ -1,0 +1,9 @@
+{
+  "seed": 42,
+  "target": "effusion",
+  "label_index": 2,
+  "max_train": 10000,
+  "actual_train": 10000,
+  "preprocessing": "pixels / 255, StandardScaler, PCA(50)",
+  "dataset": "ChestMNIST derived from NIH ChestXray14"
+}

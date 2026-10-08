@@ -1,0 +1,5 @@
+{
+  "dataset": "synthetic_three_class",
+  "accuracy": 0.8933333333333333,
+  "macro_f1": 0.8923678980474112
+}
