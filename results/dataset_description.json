@@ -1,0 +1,77 @@
+{
+  "target": "effusion",
+  "target_index": 2,
+  "splits": {
+    "train": {
+      "n_samples": 78468,
+      "image_shape": [
+        28,
+        28
+      ],
+      "intensity_min": 0,
+      "intensity_max": 253,
+      "n_positive": 9261,
+      "n_negative": 69207,
+      "prevalence": 0.1180226334301881,
+      "n_missing_pixels": 0,
+      "n_missing_labels": 0,
+      "label_values": [
+        0,
+        1
+      ]
+    },
+    "val": {
+      "n_samples": 11219,
+      "image_shape": [
+        28,
+        28
+      ],
+      "intensity_min": 0,
+      "intensity_max": 253,
+      "n_positive": 1292,
+      "n_negative": 9927,
+      "prevalence": 0.11516177912469917,
+      "n_missing_pixels": 0,
+      "n_missing_labels": 0,
+      "label_values": [
+        0,
+        1
+      ]
+    },
+    "test": {
+      "n_samples": 22433,
+      "image_shape": [
+        28,
+        28
+      ],
+      "intensity_min": 0,
+      "intensity_max": 253,
+      "n_positive": 2754,
+      "n_negative": 19679,
+      "prevalence": 0.12276556858199973,
+      "n_missing_pixels": 0,
+      "n_missing_labels": 0,
+      "label_values": [
+        0,
+        1
+      ]
+    }
+  },
+  "train_prevalence_all_labels": {
+    "atelectasis": 0.10190141204057705,
+    "cardiomegaly": 0.02485089463220676,
+    "effusion": 0.1180226334301881,
+    "infiltration": 0.17732069123719224,
+    "mass": 0.05082326553499516,
+    "nodule": 0.0557552123158485,
+    "pneumonia": 0.01246367946169139,
+    "pneumothorax": 0.04721669980119284,
+    "consolidation": 0.041583830351225974,
+    "edema": 0.021537442014579192,
+    "emphysema": 0.022926543304276903,
+    "fibrosis": 0.014757608196972014,
+    "pleural_thickening": 0.029043686598358567,
+    "hernia": 0.001835142988224499
+  },
+  "mean_findings_per_image_train": 0.7200387419075291
+}

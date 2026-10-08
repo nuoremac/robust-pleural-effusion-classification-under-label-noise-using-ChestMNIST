@@ -1,0 +1,58 @@
+{
+  "seed": 42,
+  "selection_metric": "val_average_precision",
+  "selected_families": [
+    "boosting",
+    "svm_rbf",
+    "svm_linear"
+  ],
+  "selected_params": {
+    "boosting": "max_leaf_nodes=31",
+    "svm_rbf": "C=1.0",
+    "svm_linear": "C=0.1"
+  },
+  "standard_params": {
+    "boosting": {
+      "max_leaf_nodes": 31
+    },
+    "svm_rbf": {
+      "C": 1.0
+    },
+    "svm_linear": {
+      "C": 0.1
+    }
+  },
+  "ranking": [
+    {
+      "family": "boosting",
+      "val_average_precision": 0.2719082166522104
+    },
+    {
+      "family": "svm_rbf",
+      "val_average_precision": 0.24173791507169246
+    },
+    {
+      "family": "svm_linear",
+      "val_average_precision": 0.21582603294358318
+    },
+    {
+      "family": "knn",
+      "val_average_precision": 0.21277594622818596
+    },
+    {
+      "family": "decision_tree",
+      "val_average_precision": 0.20581864021421717
+    },
+    {
+      "family": "gaussian_nb",
+      "val_average_precision": 0.1844827109039095
+    },
+    {
+      "family": "logreg_sga",
+      "val_average_precision": 0.18325123582696734
+    }
+  ],
+  "val_prevalence": 0.11516177912469917,
+  "test_prevalence": 0.12276556858199973,
+  "train_prevalence": 0.118
+}

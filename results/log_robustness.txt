@@ -1,0 +1,30 @@
+Selected families: ['boosting', 'svm_rbf', 'svm_linear']
+Standard configurations: {'boosting': {'max_leaf_nodes': 31}, 'svm_rbf': {'C': 1.0}, 'svm_linear': {'C': 0.1}}
+2026/10/08 02:45:21 INFO alembic.runtime.plugins: setup plugin alembic.autogenerate.schemas
+2026/10/08 02:45:21 INFO alembic.runtime.plugins: setup plugin alembic.autogenerate.tables
+2026/10/08 02:45:21 INFO alembic.runtime.plugins: setup plugin alembic.autogenerate.types
+2026/10/08 02:45:21 INFO alembic.runtime.plugins: setup plugin alembic.autogenerate.constraints
+2026/10/08 02:45:21 INFO alembic.runtime.plugins: setup plugin alembic.autogenerate.defaults
+2026/10/08 02:45:21 INFO alembic.runtime.plugins: setup plugin alembic.autogenerate.comments
+2026/10/08 02:45:21 INFO mlflow.store.db.utils: Creating initial MLflow database tables...
+2026/10/08 02:45:21 INFO mlflow.store.db.utils: Updating database tables
+2026/10/08 02:45:21 INFO alembic.runtime.migration: Context impl SQLiteImpl.
+2026/10/08 02:45:21 INFO alembic.runtime.migration: Will assume non-transactional DDL.
+2026/10/08 02:45:22 INFO alembic.runtime.migration: Context impl SQLiteImpl.
+2026/10/08 02:45:22 INFO alembic.runtime.migration: Will assume non-transactional DDL.
+Resuming: 7 run(s) already recorded in runs_robustness.jsonl
+
+=== seed 42 ===
+  corruption: {'noise_minority_label': 1, 'noise_rate': 0.05, 'noise_n_flipped': 59, 'noise_n_minority': 1180, 'noise_prevalence_before': 0.118, 'noise_prevalence_after': 0.1121, 'noise_seed': 42}
+    skip (already recorded): (42, 'boosting', 'clean', 'standard')
+    skip (already recorded): (42, 'boosting', 'clean', 'robust')
+    skip (already recorded): (42, 'boosting', 'noisy', 'standard')
+    boosting / noisy / robust
+      candidate l2_regularization=10.0, max_depth=2, max_leaf_nodes=4, min_samples_leaf=100 val AP=0.2793 (6.8s fit)
+      retained l2_regularization=10.0, max_depth=2, max_leaf_nodes=4, min_samples_leaf=100 val AP=0.2793 test AP=0.2830 test AUC=0.7455 test F1*=0.3558
+    skip (already recorded): (42, 'svm_rbf', 'clean', 'standard')
+    skip (already recorded): (42, 'svm_rbf', 'clean', 'robust')
+    skip (already recorded): (42, 'svm_rbf', 'noisy', 'standard')
+    svm_rbf / noisy / robust
+      candidate C=0.01                                   val AP=0.2390 (18.4s fit)
+      retained C=0.01                                   val AP=0.2390 test AP=0.2711 test AUC=0.7137 test F1*=0.3358

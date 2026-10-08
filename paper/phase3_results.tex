@@ -1,0 +1,190 @@
+% =====================================================================
+%  TP4, Phase III, second half: results and discussion.
+%  Author: FOMETHE SOBMBANANG MAXIMILIEN
+%  Fragment, included by phase3_sections.tex. See that file for the
+%  packages the host document must load.
+% =====================================================================
+
+\section{Results and discussion}
+\label{sec:results}
+
+\subsection{The seven baselines}
+\label{sec:results-baselines}
+
+\Cref{tab:baselines} reports the retained candidate of each family, and
+\cref{fig:pr,fig:roc} show the corresponding curves on the test split.
+Histogram gradient boosting leads on validation average precision with
+\num{0.2719}, ahead of the RBF kernel machine at \num{0.2417} and the linear
+support vector machine at \num{0.2158}. The $k$-nearest neighbours rule with
+$K=11$ follows closely at \num{0.2128}, then the depth~5 tree at \num{0.2058},
+Gaussian naive Bayes at \num{0.1845} and the gradient ascent logistic model at
+\num{0.1833}. The first three were therefore carried into Task~3.2.
+
+\begin{table*}[t]
+  \centering
+  \caption{The seven baselines on the primary seed. Each row is the candidate of
+  its family with the highest validation average precision; the test columns are
+  computed once, after that choice. The score type is \emph{prob.} when the
+  ranking metrics come from \texttt{predict\_proba} and \emph{margin} when they
+  come from \texttt{decision\_function}. Accuracy, precision, recall and F1 are
+  taken at each family's default cut-off, which \cref{sec:results-operating}
+  shows to be the wrong reading of this task.}
+  \label{tab:baselines}
+  \footnotesize\setlength{\tabcolsep}{4.5pt}
+  \input{../results/tables/table_baselines.tex}
+\end{table*}
+
+The informative comparison is not the raw value but the lift over the no-skill
+level, because average precision inherits the prevalence of the split it is
+measured on, and the two held out splits do not have the same prevalence
+(\num{0.1152} on validation, \num{0.1228} on test). On test, boosting reaches
+\num{2.24} times the no-skill level and the RBF machine \num{2.25} times, while
+the gradient ascent logistic model reaches \num{1.65}. Two conclusions follow.
+The models do extract a real signal, between \num{1.6} and \num{2.3} times what
+chance gives on this prevalence. And that signal is modest: a precision near
+\num{0.26} at a recall near \num{0.5} (\cref{tab:operating}) means three false
+alarms for every correct call, which is not a usable screening operating point.
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=\columnwidth]{fig1_pr_baselines.pdf}
+  \caption{Precision-recall curves on the test split. The dotted line is the
+  no-skill level, equal to the \num{0.1228} prevalence. The vertical axis is
+  truncated at \num{0.70}: below a recall of about \num{0.02} the curves are
+  decided by a handful of images and swing between \num{0} and \num{1}.}
+  \label{fig:pr}
+\end{figure}
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=\columnwidth]{fig2_roc_baselines.pdf}
+  \caption{ROC curves for the same seven models and the same score vectors as
+  \cref{fig:pr}. The two views do not agree on the ordering of the top two
+  models, and the ROC view makes all seven look closer to one another than the
+  precision-recall view does.}
+  \label{fig:roc}
+\end{figure}
+
+Three observations deserve to be separated, because each is a different way the
+imbalance distorts a familiar metric.
+
+\paragraph{Accuracy ranks a constant classifier first.}
+Six of the seven models sit between \num{0.8522} and \num{0.8772} test accuracy,
+inside the band around the \num{0.8772} that an always-negative answer scores.
+The highest accuracy of the table, \num{0.8772}, belongs to the RBF kernel
+machine, and it is exactly that trivial value because at margin~\num{0} the
+model makes \emph{no} positive call at all on the \num{22433} test images:
+\num{0} true positives and \num{0} false positives. The model with the best test
+average precision of the table is therefore also the one whose hard predictions
+carry no information. Accuracy appears in \cref{tab:baselines} for completeness
+and is used nowhere else in this work.
+
+\paragraph{F1 at the default cut-off inverts the ranking.}
+Gaussian naive Bayes has the second worst average precision (\num{0.1898} on
+test) and the best default F1 (\num{0.2995}), while boosting has the best
+average precision and an F1 of \num{0.0870}. The cause is visible in the number
+of positive calls: naive Bayes issues \num{9681} of them on \num{22433} images,
+against \num{348} for boosting and \num{0} for the RBF machine. Multiplying
+\num{784} near-duplicate likelihood terms over strongly correlated pixels drives
+the posterior to the ends of $[0,1]$, which leaves the default \num{0.5} cut-off
+in a region where almost every image is called positive; the F1 maximising
+threshold selected on validation for that model is \num{1.0000}, the boundary of
+the interval, which is the signature of a saturated posterior. Naive Bayes is
+not better at detecting effusion, it is differently miscalibrated. Any
+conclusion drawn from F1 at the default threshold on this task would be an
+artefact of calibration.
+
+\paragraph{ROC and precision-recall disagree where it matters.}
+Boosting dominates on ROC AUC (\num{0.7447} against \num{0.7175} for the RBF
+machine) but the two are level on test average precision (\num{0.2753} against
+\num{0.2763}). The reversal is the arithmetic of \cref{sec:protocol-metrics}:
+the \num{19679} negative test images in the denominator of the false positive
+rate absorb precisely the errors that the precision-recall view charges to the
+model. \Cref{fig:roc} also compresses the seven models into a narrow band, which
+would suggest that the choice of family hardly matters, whereas \cref{fig:pr}
+separates boosting and the kernel machine from the rest over most of the recall
+range. This is the concrete form, on this dataset, of the argument of Davis and
+Goadrich~\cite{davis2006relationship} and of Saito and
+Rehmsmeier~\cite{saito2015precision}.
+
+One cost belongs next to the scores. The RBF machine needs \SI{146.7}{\second}
+to score the \num{22433} test images against \SI{2.1}{\second} for boosting, a
+factor of \num{69}, because its decision function is a sum over several thousand
+support vectors in \num{784} dimensions. At equal average precision, boosting is
+the better engineering choice.
+
+\subsection{Where the decision boundary sits}
+\label{sec:results-operating}
+
+\Cref{tab:operating} reads the same seven models at a second operating point,
+the threshold that maximises F1 on validation, transferred unchanged to test.
+Every model improves and the degenerate cases disappear: boosting goes from
+\num{0.0870} to \num{0.3639}, the RBF machine from \num{0.0000} to \num{0.3411},
+the linear machine from \num{0.0610} to \num{0.3070}. Naive Bayes, first at the
+default cut-off with \num{0.2995}, moves only to \num{0.3099} and falls back to
+the middle of the table. The ordering by F1 at the selected threshold then
+broadly follows the ordering by average precision, which is the expected
+behaviour: once the threshold stops being an uncontrolled variable, the
+thresholded metric measures the same underlying ranking quality.
+
+\begin{table*}[t]
+  \centering
+  \caption{Test precision, recall and F1 at the default cut-off of each family
+  (\num{0.5} on a posterior, \num{0} on a margin) and at the cut-off that
+  maximises validation F1. The test split is never used to choose the threshold.
+  Every model gains, and the two models that made almost no positive call at the
+  default cut-off gain the most.}
+  \label{tab:operating}
+  \small
+  \input{../results/tables/table_operating_point.tex}
+\end{table*}
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=\columnwidth]{fig5_threshold_sensitivity.pdf}
+  \caption{F1 of the boosted model against its decision threshold, on validation
+  and on test. The default \num{0.5} cut-off lies far to the right of the
+  maximum, which on this prevalence sits near \num{0.07}. The two curves peak at
+  nearly the same place, so the threshold transfers across splits.}
+  \label{fig:threshold}
+\end{figure}
+
+\Cref{fig:threshold} shows why. For the boosted model the F1 maximum lies at a
+posterior of \num{0.0691}, not at \num{0.5}, and the validation and test curves
+peak at nearly the same place, so the choice transfers. The practical reading is
+that a thresholded metric on an imbalanced task reports the sum of two things,
+the quality of the ranking and the accident of where the library put the
+cut-off, and that the second term dominates here. This is why average precision
+drives every selection decision in this work, and why \cref{tab:robustness}
+reports F1 at the validation selected point rather than at the default one.
+
+\subsection{Does reducing the dimension help?}
+\label{sec:results-representation}
+
+The two families whose behaviour depends most directly on the ambient dimension
+were rerun on a \num{50} component principal projection fitted on the training
+subsample, retaining \num{95.3} percent of the variance
+(\cref{tab:representation}). Neither improves. The $K=5$ neighbours rule falls
+from \num{0.1822} to \num{0.1776} validation average precision and the RBF
+machine from \num{0.2417} to \num{0.2344}. The expectation behind the ablation,
+that Euclidean distances and an isotropic kernel would behave better once
+\num{784} correlated pixel coordinates are compressed, is not met. The
+discriminative signal lies partly in directions that principal component
+analysis discards for carrying little variance, which is plausible on this
+modality: variance in a chest radiograph is dominated by patient size, framing
+and exposure, none of which is the costophrenic angle. The projection does buy
+computation, since the RBF machine then scores the test split in
+\SI{21.9}{\second} instead of \SI{146.7}{\second}, a factor of \num{6.7}, for
+\num{0.008} of average precision. That trade is worth taking in deployment and
+not worth taking when the point is to compare model families, so the main tables
+keep the \num{784} dimensional features.
+
+\begin{table}[t]
+  \centering
+  \caption{Representation check on the primary seed. The principal basis is
+  fitted on the training subsample only and retains \num{95.3} percent of the
+  variance.}
+  \label{tab:representation}
+  \footnotesize\setlength{\tabcolsep}{4pt}
+  \input{../results/tables/table_representation.tex}
+\end{table}

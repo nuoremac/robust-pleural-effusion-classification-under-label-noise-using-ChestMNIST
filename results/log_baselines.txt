@@ -1,0 +1,108 @@
+2026/10/08 02:00:13 INFO alembic.runtime.plugins: setup plugin alembic.autogenerate.schemas
+2026/10/08 02:00:13 INFO alembic.runtime.plugins: setup plugin alembic.autogenerate.tables
+2026/10/08 02:00:13 INFO alembic.runtime.plugins: setup plugin alembic.autogenerate.types
+2026/10/08 02:00:13 INFO alembic.runtime.plugins: setup plugin alembic.autogenerate.constraints
+2026/10/08 02:00:13 INFO alembic.runtime.plugins: setup plugin alembic.autogenerate.defaults
+2026/10/08 02:00:13 INFO alembic.runtime.plugins: setup plugin alembic.autogenerate.comments
+2026/10/08 02:00:13 INFO mlflow.store.db.utils: Creating initial MLflow database tables...
+2026/10/08 02:00:14 INFO mlflow.store.db.utils: Updating database tables
+2026/10/08 02:00:14 INFO alembic.runtime.migration: Context impl SQLiteImpl.
+2026/10/08 02:00:14 INFO alembic.runtime.migration: Will assume non-transactional DDL.
+2026/10/08 02:00:14 INFO alembic.runtime.migration: Running upgrade  -> 451aebb31d03, add metric step
+2026/10/08 02:00:14 INFO alembic.runtime.migration: Running upgrade 451aebb31d03 -> 90e64c465722, migrate user column to tags
+2026/10/08 02:00:14 INFO alembic.runtime.migration: Running upgrade 90e64c465722 -> 181f10493468, allow nulls for metric values
+2026/10/08 02:00:14 INFO alembic.runtime.migration: Running upgrade 181f10493468 -> df50e92ffc5e, Add Experiment Tags Table
+2026/10/08 02:00:14 INFO alembic.runtime.migration: Running upgrade df50e92ffc5e -> 7ac759974ad8, Update run tags with larger limit
+2026/10/08 02:00:14 INFO alembic.runtime.migration: Running upgrade 7ac759974ad8 -> 89d4b8295536, create latest metrics table
+2026/10/08 02:00:14 INFO alembic.runtime.migration: Running upgrade 89d4b8295536 -> 2b4d017a5e9b, add model registry tables to db
+2026/10/08 02:00:14 INFO alembic.runtime.migration: Running upgrade 2b4d017a5e9b -> cfd24bdc0731, Update run status constraint with killed
+2026/10/08 02:00:14 INFO alembic.runtime.migration: Running upgrade cfd24bdc0731 -> 0a8213491aaa, drop_duplicate_killed_constraint
+2026/10/08 02:00:14 INFO alembic.runtime.migration: Running upgrade 0a8213491aaa -> 728d730b5ebd, add registered model tags table
+2026/10/08 02:00:14 INFO alembic.runtime.migration: Running upgrade 728d730b5ebd -> 27a6a02d2cf1, add model version tags table
+2026/10/08 02:00:14 INFO alembic.runtime.migration: Running upgrade 27a6a02d2cf1 -> 84291f40a231, add run_link to model_version
+2026/10/08 02:00:14 INFO alembic.runtime.migration: Running upgrade 84291f40a231 -> a8c4a736bde6, allow nulls for run_id
+2026/10/08 02:00:14 INFO alembic.runtime.migration: Running upgrade a8c4a736bde6 -> 39d1c3be5f05, add_is_nan_constraint_for_metrics_tables_if_necessary
+2026/10/08 02:00:14 INFO alembic.runtime.migration: Running upgrade 39d1c3be5f05 -> c48cb773bb87, reset_default_value_for_is_nan_in_metrics_table_for_mysql
+2026/10/08 02:00:14 INFO alembic.runtime.migration: Running upgrade c48cb773bb87 -> bd07f7e963c5, create index on run_uuid
+2026/10/08 02:00:14 INFO alembic.runtime.migration: Running upgrade bd07f7e963c5 -> 0c779009ac13, add deleted_time field to runs table
+2026/10/08 02:00:14 INFO alembic.runtime.migration: Running upgrade 0c779009ac13 -> cc1f77228345, change param value length to 500
+2026/10/08 02:00:14 INFO alembic.runtime.migration: Running upgrade cc1f77228345 -> 97727af70f4d, Add creation_time and last_update_time to experiments table
+2026/10/08 02:00:14 INFO alembic.runtime.migration: Running upgrade 97727af70f4d -> 3500859a5d39, Add Model Aliases table
+2026/10/08 02:00:14 INFO alembic.runtime.migration: Running upgrade 3500859a5d39 -> 7f2a7d5fae7d, add datasets inputs input_tags tables
+2026/10/08 02:00:14 INFO alembic.runtime.migration: Running upgrade 7f2a7d5fae7d -> 2d6e25af4d3e, increase max param val length from 500 to 8000
+2026/10/08 02:00:15 INFO alembic.runtime.migration: Running upgrade 2d6e25af4d3e -> acf3f17fdcc7, add storage location field to model versions
+2026/10/08 02:00:15 INFO alembic.runtime.migration: Running upgrade acf3f17fdcc7 -> 867495a8f9d4, add trace tables
+2026/10/08 02:00:15 INFO alembic.runtime.migration: Running upgrade 867495a8f9d4 -> 5b0e9adcef9c, add cascade deletion to trace tables foreign keys
+2026/10/08 02:00:15 INFO alembic.runtime.migration: Running upgrade 5b0e9adcef9c -> 4465047574b1, increase max dataset schema size
+2026/10/08 02:00:15 INFO alembic.runtime.migration: Running upgrade 4465047574b1 -> f5a4f2784254, increase run tag value limit to 8000
+2026/10/08 02:00:15 INFO alembic.runtime.migration: Running upgrade f5a4f2784254 -> 0584bdc529eb, add cascading deletion to datasets from experiments
+2026/10/08 02:00:15 INFO alembic.runtime.migration: Running upgrade 0584bdc529eb -> 400f98739977, add logged model tables
+2026/10/08 02:00:15 INFO alembic.runtime.migration: Running upgrade 400f98739977 -> 6953534de441, add step to inputs table
+2026/10/08 02:00:15 INFO alembic.runtime.migration: Running upgrade 6953534de441 -> bda7b8c39065, increase_model_version_tag_value_limit
+2026/10/08 02:00:15 INFO alembic.runtime.migration: Running upgrade bda7b8c39065 -> cbc13b556ace, add V3 trace schema columns
+2026/10/08 02:00:15 INFO alembic.runtime.migration: Running upgrade cbc13b556ace -> 770bee3ae1dd, add assessments table
+2026/10/08 02:00:15 INFO alembic.runtime.migration: Running upgrade 770bee3ae1dd -> a1b2c3d4e5f6, add spans table
+2026/10/08 02:00:15 INFO alembic.runtime.migration: Running upgrade a1b2c3d4e5f6 -> de4033877273, create entity_associations table
+2026/10/08 02:00:15 INFO alembic.runtime.migration: Running upgrade de4033877273 -> 1a0cddfcaa16, Add webhooks and webhook_events tables
+2026/10/08 02:00:15 INFO alembic.runtime.migration: Running upgrade 1a0cddfcaa16 -> 534353b11cbc, add scorer tables
+2026/10/08 02:00:16 INFO alembic.runtime.migration: Running upgrade 534353b11cbc -> 71994744cf8e, add evaluation datasets
+2026/10/08 02:00:16 INFO alembic.runtime.migration: Running upgrade 71994744cf8e -> 3da73c924c2f, add outputs to dataset record
+2026/10/08 02:00:16 INFO alembic.runtime.migration: Running upgrade 3da73c924c2f -> bf29a5ff90ea, add jobs table
+2026/10/08 02:00:16 INFO alembic.runtime.migration: Running upgrade bf29a5ff90ea -> 1bd49d398cd23, add secrets tables
+2026/10/08 02:00:16 INFO alembic.runtime.migration: Context impl SQLiteImpl.
+2026/10/08 02:00:16 INFO alembic.runtime.migration: Will assume non-transactional DDL.
+MLflow tracking enabled, backend store: sqlite:///C:/Users/J-STORE/Claude_Code_Skills/tp4-pleural-effusion/mlflow.db
+
+Dataset description for target 'effusion'
+  train n= 78468 positives= 9261 prevalence=0.1180 missing_labels=0
+  val   n= 11219 positives= 1292 prevalence=0.1152 missing_labels=0
+  test  n= 22433 positives= 2754 prevalence=0.1228 missing_labels=0
+
+Training subsample: {'feature_space': 'standardized', 'seed': 42, 'n_features': 784, 'n_train': 10000, 'n_val': 11219, 'n_test': 22433, 'train_prevalence': 0.118, 'val_prevalence': 0.11516177912469917, 'test_prevalence': 0.12276556858199973}
+
+[logreg_sga] 3 candidate(s)
+  l2=1e-05               val AP=0.1833 val AUC=0.6485 val F1=0.1413 test AP=0.2024 (3.0s)
+  l2=0.0001              val AP=0.1812 val AUC=0.6450 val F1=0.1386 test AP=0.2015 (2.6s)
+  l2=0.001               val AP=0.1740 val AUC=0.6333 val F1=0.1094 test AP=0.1893 (2.6s)
+  -> retained: l2=1e-05 (val AP=0.1833)
+
+[gaussian_nb] 1 candidate(s)
+  var_smoothing=1e-09    val AP=0.1845 val AUC=0.6701 val F1=0.2926 test AP=0.1898 (0.7s)
+  -> retained: var_smoothing=1e-09 (val AP=0.1845)
+
+[knn] 3 candidate(s)
+  n_neighbors=3          val AP=0.1652 val AUC=0.6179 val F1=0.1642 test AP=0.1667 (20.9s)
+  n_neighbors=5          val AP=0.1822 val AUC=0.6426 val F1=0.1310 test AP=0.1819 (23.0s)
+  n_neighbors=11         val AP=0.2128 val AUC=0.6899 val F1=0.0587 test AP=0.2041 (20.0s)
+  -> retained: n_neighbors=11 (val AP=0.2128)
+
+[decision_tree] 3 candidate(s)
+  max_depth=3            val AP=0.2003 val AUC=0.6828 val F1=0.0000 test AP=0.2020 (2.2s)
+  max_depth=5            val AP=0.2058 val AUC=0.6877 val F1=0.0189 test AP=0.2075 (2.6s)
+  max_depth=10           val AP=0.1788 val AUC=0.6194 val F1=0.1747 test AP=0.1832 (5.0s)
+  -> retained: max_depth=5 (val AP=0.2058)
+
+[boosting] 1 candidate(s)
+  max_leaf_nodes=31      val AP=0.2719 val AUC=0.7530 val F1=0.0886 test AP=0.2753 (27.6s)
+  -> retained: max_leaf_nodes=31 (val AP=0.2719)
+
+[svm_linear] 3 candidate(s)
+  C=0.1                  val AP=0.2158 val AUC=0.6974 val F1=0.0567 test AP=0.2281 (13.2s)
+  C=1.0                  val AP=0.2038 val AUC=0.6821 val F1=0.0783 test AP=0.2184 (24.2s)
+  C=10.0                 val AP=0.2010 val AUC=0.6782 val F1=0.0856 test AP=0.2159 (28.7s)
+  -> retained: C=0.1 (val AP=0.2158)
+
+[svm_rbf] 3 candidate(s)
+  C=0.1                  val AP=0.2414 val AUC=0.7078 val F1=0.0000 test AP=0.2756 (234.1s)
+  C=1.0                  val AP=0.2417 val AUC=0.7084 val F1=0.0000 test AP=0.2763 (244.0s)
+  C=10.0                 val AP=0.2375 val AUC=0.7087 val F1=0.1464 test AP=0.2691 (255.2s)
+  -> retained: C=1.0 (val AP=0.2417)
+
+Selected by val average_precision: ['boosting', 'svm_rbf', 'svm_linear']
+
+Representation check on a 50 component PCA projection
+  explained variance: 0.9531
+  knn        n_neighbors=5    val AP=0.1776 test AP=0.1810
+  svm_rbf    C=1.0            val AP=0.2344 test AP=0.2683
+
+Written: C:\Users\J-STORE\Claude_Code_Skills\tp4-pleural-effusion\results\results_baselines.csv and C:\Users\J-STORE\Claude_Code_Skills\tp4-pleural-effusion\results\results_representation.csv

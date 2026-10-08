@@ -1,0 +1,120 @@
+% =====================================================================
+%  TP4, Phase III, supplementary material.
+%  Author: FOMETHE SOBMBANANG MAXIMILIEN
+%
+%  OPTIONAL. The eight page article allocates one page to the protocol and
+%  two to the results; this file holds the material that does not fit in
+%  that budget but that supports claims made in the main text. Include it
+%  only if space allows, or keep it as supplementary material. Dropping it
+%  leaves the main text self-contained: the claims it supports are stated
+%  there with their numbers.
+% =====================================================================
+
+\appendix
+
+\section{Supplementary material}
+\label{sec:appendix}
+
+\subsection{Default cut-off against a cut-off chosen on validation}
+\label{sec:appendix-operating}
+
+\Cref{tab:operating} reads the seven baselines at two operating points: the
+default cut-off of each family, and the threshold that maximises F1 on
+validation and is then transferred unchanged to test. Every model improves and
+the degenerate cases disappear. Boosting goes from \num{0.0870} to \num{0.3639},
+the RBF machine from \num{0.0000} to \num{0.3411} and the linear machine from
+\num{0.0610} to \num{0.3070}, while Gaussian naive Bayes, first at the default
+cut-off with \num{0.2995}, moves only to \num{0.3099} and falls back to the
+middle of the table. The ordering by F1 at the selected threshold then broadly
+follows the ordering by average precision, which is the expected behaviour: once
+the threshold stops being an uncontrolled variable, the thresholded metric
+measures the same underlying ranking quality.
+
+\begin{table}[t]
+  \centering
+  \caption{Test precision, recall and F1 at the default cut-off of each family
+  (\num{0.5} on a posterior, \num{0} on a margin) and at the cut-off that
+  maximises validation F1. The test split is never used to choose the threshold.
+  The two models that made almost no positive call at the default cut-off gain
+  the most.}
+  \label{tab:operating}
+  \footnotesize\setlength{\tabcolsep}{4pt}
+  \input{../results/tables/table_operating_point.tex}
+\end{table}
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=\columnwidth]{fig5_threshold_sensitivity.pdf}
+  \caption{F1 of the boosted model against its decision threshold, on validation
+  and on test. The default \num{0.5} cut-off lies far to the right of the
+  maximum, which on this prevalence sits near \num{0.07}. The two curves peak at
+  nearly the same place, so the threshold transfers across splits.}
+  \label{fig:threshold}
+\end{figure}
+
+\Cref{fig:threshold} shows why. For the boosted model the F1 maximum lies at a
+posterior of \num{0.0691}, not at \num{0.5}, and the validation and test curves
+peak at nearly the same place, so the choice transfers. A thresholded metric on
+an imbalanced task therefore reports the sum of two things, the quality of the
+ranking and the accident of where the library put the cut-off, and on this
+prevalence the second term dominates.
+
+\subsection{Does reducing the dimension help?}
+\label{sec:appendix-representation}
+
+The two families whose behaviour depends most directly on the ambient dimension
+were rerun on a \num{50} component principal projection fitted on the training
+subsample, retaining \num{95.3} percent of the variance
+(\cref{tab:representation}). Neither improves: the $K=5$ neighbours rule falls
+from \num{0.1822} to \num{0.1776} validation average precision and the RBF
+machine from \num{0.2417} to \num{0.2344}. The expectation behind the ablation,
+that Euclidean distances and an isotropic kernel would behave better once
+\num{784} correlated pixel coordinates are compressed, is not met. Part of the
+discriminative signal lies in directions that principal component analysis
+discards for carrying little variance, which is plausible on this modality:
+variance in a chest radiograph is dominated by patient size, framing and
+exposure, none of which is the costophrenic angle.
+
+\begin{table}[t]
+  \centering
+  \caption{Representation check on the primary seed, at matched
+  hyperparameters. The principal basis is fitted on the training subsample only
+  and retains \num{95.3} percent of the variance.}
+  \label{tab:representation}
+  \footnotesize\setlength{\tabcolsep}{5pt}
+  \input{../results/tables/table_representation.tex}
+\end{table}
+
+The projection does buy computation: the RBF machine then scores the test split
+in \SI{21.9}{\second} instead of \SI{146.7}{\second}, a factor of \num{6.7}, for
+\num{0.008} of average precision. That trade is worth taking in a deployment
+setting and is not worth taking when the point is to compare model families, so
+the main tables keep the \num{784} dimensional features.
+
+\subsection{Reproducing the numbers}
+\label{sec:appendix-repro}
+
+The code, the result files and the MLflow store live in the branch
+\texttt{phase3-fomethe} of the project repository. After placing the six
+ChestMNIST arrays under \texttt{data/}:
+
+\begin{center}
+\footnotesize
+\begin{tabular}{@{}ll@{}}
+\toprule
+Command & Produces \\
+\midrule
+\texttt{python tests/test\_phase3.py}  & \num{12} invariant checks \\
+\texttt{python src/run\_baselines.py}  & \cref{tab:baselines}, \cref{tab:operating} \\
+\texttt{python src/run\_robustness.py} & \cref{tab:robustness}, \cref{tab:degradation} \\
+\texttt{python src/make\_figures.py}   & \cref{fig:pr} to \cref{fig:threshold} \\
+\texttt{python src/export\_tables.py}  & the LaTeX bodies of every table \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\noindent
+No number in the text or in the tables is retyped by hand: the table bodies are
+generated from the result files, and the figures are drawn from the score
+vectors those same runs persisted, so a figure cannot disagree with the table
+beside it.

@@ -1,0 +1,9 @@
+# Phase III of TP4. Pinned to the versions the reported numbers were produced with
+# (Python 3.12.x on Windows 11). The pins matter for the tree based models, whose
+# tie breaking can change between scikit-learn minor releases.
+numpy==2.4.1
+scipy==1.17.0
+scikit-learn==1.8.0
+pandas==2.3.3
+matplotlib==3.10.8
+mlflow==3.8.1

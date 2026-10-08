@@ -1,0 +1,170 @@
+% =====================================================================
+%  TP4, Phase III, first half: the experimental protocol.
+%  Author: FOMETHE SOBMBANANG MAXIMILIEN
+%  Fragment, included by phase3_sections.tex. See that file for the
+%  packages the host document must load.
+% =====================================================================
+
+\section{Experimental protocol}
+\label{sec:protocol}
+
+\subsection{Task, data and representation}
+\label{sec:protocol-data}
+
+The experiments use ChestMNIST, the chest radiograph subset of MedMNIST
+v2~\cite{yang2023medmnist}, which repackages NIH
+ChestX-ray14~\cite{wang2017chestxray8} as \num{28}\,$\times$\,\num{28} grayscale
+thumbnails carrying \num{14} binary thorax findings each. The findings are not
+mutually exclusive, a training image carrying \num{0.72} of them on average and
+up to nine at once, so a \num{14}-class decision is not defined on this data and
+the task retained here is the binary detection of pleural effusion, column~2 of
+the label matrix.
+
+\begin{table}[t]
+  \centering
+  \caption{ChestMNIST partition for the effusion target. The splits are those
+  distributed by MedMNIST v2; the \num{10000} image training subsample used
+  below is drawn from the train row with stratification.}
+  \label{tab:dataset}
+  \small
+  \input{../results/tables/table_dataset.tex}
+\end{table}
+
+\Cref{tab:dataset} gives the partition. The official train, validation and test
+splits are preserved exactly. Only the training split is subsampled, to
+\num{10000} images, by stratified sampling with seed~\num{42}, which keeps the
+\num{11.80} percent prevalence of the full split; the retained row indices are
+saved to \texttt{results/train\_indices\_seed42.npy}. The cap is a budget
+decision, since seven families, a \num{2}\,$\times$\,\num{2} design and three
+seeds have to fit in one session and the kernel machine is quadratic in the
+number of training examples. The arrays are dense \texttt{uint8} with no
+missing-value sentinel, which is verified programmatically rather than assumed.
+Each image is flattened to \num{784} intensities rescaled to $[0,1]$ and
+standardized per feature; the scaler, and the \num{50} component principal basis
+used in \cref{sec:appendix-representation}, are fitted on the training
+subsample only, so no statistic of the held out splits enters the
+representation.
+
+\subsection{Models, metrics and selection rule}
+\label{sec:protocol-metrics}
+
+Seven families are evaluated on those same \num{784} features: logistic
+regression trained by stochastic gradient ascent on the penalised conditional
+log-likelihood, Gaussian naive Bayes, $k$-nearest neighbours, a CART decision
+tree, histogram gradient boosting~\cite{ke2017lightgbm}, a soft margin linear
+support vector machine and an RBF kernel machine~\cite{cortes1995support}. The
+hyperparameter budget is capped at three candidates per family, as agreed in the
+common protocol: $\lambda \in \{10^{-5},10^{-4},10^{-3}\}$ for the L2 strength
+of the gradient ascent learner, $K \in \{3,5,11\}$, a maximum depth in
+$\{3,5,10\}$, and $C \in \{0.1,1,10\}$ for both support vector machines; naive
+Bayes and boosting run in one fixed configuration. A wider search would turn
+\cref{sec:results-baselines} into a comparison of search effort rather than of
+model families. Implementations come from scikit-learn
+1.8.0~\cite{pedregosa2011scikit}, except the gradient ascent learner, which the
+lab sheet asks to be written explicitly.
+
+Six families expose a posterior through \texttt{predict\_proba}; the two support
+vector machines expose only the signed distance to the separating hyperplane.
+Ranking metrics are computed from the posterior where it exists and from the
+margin otherwise, which is legitimate because ROC AUC and average precision
+depend on the induced ordering of the examples and not on the scale of the
+score. It does mean the margin based models are read at threshold~\num{0} and
+the probabilistic ones at \num{0.5}, a point \cref{sec:results-operating}
+returns to.
+
+Every run is scored with accuracy, precision, recall, F1, ROC AUC and average
+precision by a single evaluation layer (\texttt{src/evaluate.py}), so that seven
+families, four conditions and three seeds cannot drift apart through differing
+conventions. All model selection uses \emph{validation average precision}, for a
+reason that is arithmetic. With \num{2754} positive and \num{19679} negative
+test images, a classifier that always answers \emph{no effusion} already scores
+\num{0.877} accuracy. The ROC curve is nearly as insensitive: its false positive
+rate is divided by those \num{19679} negatives, so one hundred extra false
+alarms move it by \num{0.005}, whereas at a recall of \num{0.5} the same hundred
+errors move precision from \num{0.500} to \num{0.483}. The precision-recall
+curve divides instead by the number of positive calls made, which is the
+quantity a radiologist pays for, and its no-skill level is the prevalence itself
+rather than a fixed diagonal. This is the standard argument for preferring
+precision-recall to ROC under class
+imbalance~\cite{davis2006relationship,saito2015precision}, and average precision
+is its scalar summary. The test split is read once per configuration, after the
+choice has been made on validation.
+
+\subsection{Simulated label uncertainty and the \texorpdfstring{$2\times2$}{2x2} design}
+\label{sec:protocol-noise}
+
+In the training subsample the minority class is the effusion positive class,
+\num{1180} of \num{10000} images, so a five percent corruption flips \num{59}
+labels from positive to negative and lowers the training prevalence from
+\num{0.1180} to \num{0.1121}. The flip is asymmetric by design: it reproduces
+the dominant failure mode of report mined annotation, in which a small effusion
+is not mentioned and the image is recorded as negative, and it is the harder
+direction for a class that is already scarce. Three constraints are enforced in
+code. The corrupted row indices are drawn once per seed and shared by every
+model, so a gap between two families can never come from two different
+corruptions; validation and test labels are never altered; and the flipped
+indices are saved to \texttt{results/flipped\_indices\_seed*.npy} rather than
+regenerated on demand.
+
+\begin{table}[t]
+  \centering
+  \caption{The design of Task~3.2, repeated for each of the three selected
+  families and each of the three seeds. The upper left cell reproduces the
+  baseline of \cref{tab:baselines}.}
+  \label{tab:design}
+  \small
+  \begin{tabular}{@{}p{0.33\columnwidth}cc@{}}
+    \toprule
+    Training labels & Standard & Robust \\
+    \midrule
+    Unaltered                      & fit, evaluate & fit, evaluate \\[2pt]
+    \num{5}\% of the minority
+    class flipped                  & fit, evaluate & fit, evaluate \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+The three families with the highest validation average precision are retrained
+in the four cells of \cref{tab:design}. Crossing the label condition with the
+capacity of the hypothesis class, rather than reporting the corrupted and
+regularised cell alone, is what makes the result readable: the clean and robust
+cell gives the price of extra regularisation when nothing is wrong with the
+labels, the corrupted and standard cell gives the damage, and only the
+difference of differences supports a claim about robustness rather than about a
+configuration that happens to be better everywhere.
+
+The robust configurations constrain the hypothesis class more tightly, in the
+direction indicated by the lab sheet: $\lambda \in \{10^{-2},10^{-1},1\}$ for
+the gradient ascent learner, $C \in \{10^{-2},10^{-3}\}$ for the support vector
+machines, shallower trees with larger leaves for the tree based models, and
+$K \in \{25,51,101\}$ for the neighbours rule. The retained candidate is chosen
+once, on the validation average precision of the clean run at seed~\num{42}, and
+is then held fixed for the corrupted condition and for the replication seeds.
+Reselecting it under corruption would describe what a practitioner does, but it
+would make the difference between the two cells of a row mix a change of labels
+with a change of configuration; the question asked here is whether one fixed,
+more constrained model degrades less than one fixed, less constrained one. These
+configurations are experimental hypotheses, and \cref{sec:results-robustness}
+reports whether the data supports them.
+
+\subsection{Replication and tracking}
+\label{sec:protocol-mlops}
+
+The robustness experiment is repeated with seeds \num{42}, \num{7} and
+\num{2024}. The seed jointly controls the training subsample, the corrupted
+indices and the internal randomness of the estimators, so the spread across
+seeds bounds the sampling variability of the whole pipeline rather than of one
+of its stages. The baseline sweep and the choice of robust hyperparameters use
+seed~\num{42} only.
+
+Every run is logged to an MLflow experiment~\cite{zaharia2018accelerating} on a
+local SQLite backend (Task~3.3). A record carries the family, all its
+hyperparameters, the seed, the feature space, the training subset size, the
+corruption rate and the number of flipped labels; the eight metrics on
+validation and on test; the fit and prediction times; the experimental cell as a
+queryable tag; and, as artifacts, the serialised estimator, the flipped indices
+and the trace of the candidates examined during selection. Runs are also
+appended to \texttt{results/runs\_robustness.jsonl} as they complete, which
+makes an interrupted sweep resumable and keeps the tables reproducible without
+MLflow. Library versions are pinned, since the tree based models break ties
+differently across scikit-learn minor releases.

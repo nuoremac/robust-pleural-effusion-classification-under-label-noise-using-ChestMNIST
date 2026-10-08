@@ -1,0 +1,98 @@
+% =====================================================================
+%  TP4, Phase III, closing discussion: what the experiment does not settle,
+%  and the handover to the evidential modelling of Phase IV.
+%  Author: FOMETHE SOBMBANANG MAXIMILIEN
+%  Fragment, included by phase3_sections.tex. It continues the section
+%  opened by phase3_results.tex.
+% =====================================================================
+
+\subsection{What these experiments do not settle}
+\label{sec:results-limits}
+
+Four limits bound every claim made above, and they are stated here rather than
+left for a reader to infer.
+
+\paragraph{The images are thumbnails and the features are pixels.}
+A pleural effusion is read on a radiograph as blunting of the costophrenic angle
+and a fluid meniscus at the lung base, a local geometric cue occupying a small
+part of the image. At \num{28}\,$\times$\,\num{28} that region covers a few
+pixels, and a flat vector of \num{784} intensities gives none of the models any
+notion of adjacency. The absolute scores reported here should be read as what
+classical classifiers extract from a thumbnail, not as an estimate of what is
+achievable on full resolution radiographs. The comparison that this work
+supports is the one between families, conditions and metrics, all measured under
+one fixed representation.
+
+\paragraph{Published numbers are not directly comparable.}
+The MedMNIST authors report a convolutional baseline on the same
+\num{28}\,$\times$\,\num{28} ChestMNIST images~\cite{yang2023medmnist}, but
+averaged over the \num{14} findings and as area under the ROC curve, whereas
+this study reports a single finding and relies on average precision. A
+difference in target, in metric and in the number of training images is enough
+to make a direct ranking meaningless. Published figures and the figures of this
+work are therefore kept in separate tables, and no claim of superiority or
+inferiority is made across them.
+
+\paragraph{The clean condition is not a clean reference.}
+The annotations of ChestX-ray14, which ChestMNIST
+redistributes~\cite{wang2017chestxray8}, were extracted from free-text
+radiology reports by natural language processing rather than assigned by a
+reader looking at the image. They therefore carry an error rate of their own,
+unknown and not measurable from the data at hand. The condition called
+\emph{clean} in \cref{tab:robustness} is the published annotation, not ground
+truth, so the \num{5} percent corruption of Task~3.2 is an increment on top of a
+baseline error whose size is not known. Any true degradation curve is shifted
+along an axis whose origin is not observed, which compresses the effect that the
+experiment can see.
+
+\paragraph{One corruption model, one rate, one direction.}
+The simulation flips a fixed fraction of the positive training labels to
+negative, independently of the image content. Real annotation error is not
+independent of the image: a faint effusion is missed more often than a large
+one, which makes the noise instance dependent and concentrated near the decision
+boundary, exactly where it is most harmful. The experiment also uses a single
+rate and a single target finding. Results obtained under class-conditional noise
+at \num{5} percent do not transfer by themselves to instance-dependent noise, to
+higher rates, or to the other thirteen findings. Finally, ChestMNIST has no
+explicit uncertainty category, unlike CheXpert~\cite{irvin2019chexpert}, whose
+reports distinguish an uncertain mention from a negative one; the uncertainty
+studied here is simulated for that reason, which is also the gap that Phase~IV
+addresses with a model that represents it directly.
+
+Two smaller points belong in the same list. Model selection uses a single
+validation split rather than cross-validation, so the selection itself carries a
+variance that is not quantified. And the posteriors are used only for ranking:
+no calibration measure is reported, although \cref{sec:results-baselines} shows
+at least one model, Gaussian naive Bayes, whose posterior is badly enough
+calibrated to change which metric ranks it first.
+
+\subsection{From constraining a model to representing evidence}
+\label{sec:results-bridge}
+
+The robustness mechanism tested in this phase is the only one classical
+regularisation offers: shrink the hypothesis class so that a handful of wrong
+labels cannot move the boundary far. It acts on the whole function, uniformly,
+before any particular image is seen. It gives the model no way of behaving
+differently on an image that resembles its training data and on one that does
+not.
+
+That limitation is visible in the outputs these models produce. A sigmoid
+posterior of \num{0.5} is returned both for a radiograph that genuinely lies
+between the two classes, where the evidence is balanced, and for a radiograph
+unlike anything in the training set, where there is no evidence at all. The two
+situations are clinically opposite and numerically identical, and no choice of
+$\lambda$, of $C$ or of tree depth separates them, because a point estimate of a
+probability has no room to carry that distinction. The operating point analysis
+of \cref{sec:results-operating} makes the same point from another side: the
+number the model emits is a score to be ranked, and the meaning attached to its
+value is supplied from outside, by a threshold chosen on validation.
+
+This is the opening that evidential deep learning fills. Rather than emitting a
+probability, such a model emits the parameters of a Dirichlet distribution over
+the class probabilities, so that the amount of evidence accumulated for an image
+and the belief left uncommitted become explicit outputs alongside the
+prediction~\cite{sensoy2018evidential}. The empirical ground established here,
+that constraining capacity leaves the degradation under label noise of the same
+order as the seed-to-seed variability, is what motivates looking for robustness
+in the output representation rather than only in the size of the hypothesis
+class. The formal treatment of that argument belongs to Phase~IV.

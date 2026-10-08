@@ -1,0 +1,70 @@
+% Standalone build of the Phase III contribution to the TP4 article.
+%
+% This wrapper exists so that the sections below can be compiled, proofread and
+% page-counted on their own before Phase IV assembles the eight page article.
+% The sections themselves live in phase3_sections.tex and contain no preamble,
+% so the assembled article can \input them unchanged.
+%
+%   tectonic -X compile paper/phase3_standalone.tex
+%   % or: latexmk -pdf paper/phase3_standalone.tex
+\documentclass[10pt,twocolumn,a4paper]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[english]{babel}
+\usepackage[a4paper,margin=19mm,columnsep=6mm]{geometry}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{siunitx}
+\usepackage{xcolor}
+\usepackage[hidelinks]{hyperref}
+\usepackage{cleveref}
+
+\graphicspath{{../results/figures/}}
+\captionsetup{font=small,labelfont=bf,skip=4pt}
+\captionsetup[table]{position=top}
+\sisetup{detect-weight=true,detect-family=true}
+
+\setlength{\parskip}{0pt}
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{1.05}
+
+\title{\vspace{-8mm}\large Robust classification of pleural effusion on
+ChestMNIST under uncertain labels\\[2pt]
+\normalsize Phase III: experimental protocol, results and discussion}
+\author{\normalsize FOMETHE SOBMBANANG MAXIMILIEN\\[-1pt]
+\small Computer Engineering Department, National Advanced School of Engineering,
+University of Yaound\'e I}
+\date{\small \today}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+\noindent
+This document is the Phase III contribution to the TP4 article: the experimental
+protocol, the measured results and their discussion. Seven classical
+classifiers are trained on 10\,000 ChestMNIST radiographs and evaluated on the
+untouched official validation and test splits for the detection of pleural
+effusion, a finding present in 12.3 percent of the test images. The three
+families with the highest validation average precision are then retrained under
+a simulated annotation error, five percent of the positive training labels
+flipped to negative, each in a standard and in a more strongly regularised
+configuration, over three sampling seeds. The sections below report what was
+measured, under which protocol, and what the measurements do and do not
+support.
+\end{abstract}
+
+\input{phase3_sections.tex}
+
+\bibliographystyle{plain}
+\bibliography{references_phase3}
+
+\end{document}

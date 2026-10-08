@@ -1,0 +1,74 @@
+{
+  "boosting": {
+    "params_dict": {
+      "max_depth": 2,
+      "max_leaf_nodes": 4,
+      "min_samples_leaf": 100,
+      "l2_regularization": 10.0
+    },
+    "params": "l2_regularization=10.0, max_depth=2, max_leaf_nodes=4, min_samples_leaf=100",
+    "selected_on_seed": 42,
+    "val_average_precision": 0.28206630472842004,
+    "candidates": [
+      {
+        "params": "l2_regularization=1.0, max_depth=3, max_leaf_nodes=8, min_samples_leaf=50",
+        "val_average_precision": 0.27460051324724016,
+        "val_roc_auc": 0.7569482454113169,
+        "fit_seconds": 6.21
+      },
+      {
+        "params": "l2_regularization=10.0, max_depth=2, max_leaf_nodes=4, min_samples_leaf=100",
+        "val_average_precision": 0.28206630472842004,
+        "val_roc_auc": 0.7627009990266406,
+        "fit_seconds": 5.31
+      }
+    ],
+    "selected_on_label_condition": "clean"
+  },
+  "svm_rbf": {
+    "params_dict": {
+      "C": 0.01
+    },
+    "params": "C=0.01",
+    "selected_on_seed": 42,
+    "val_average_precision": 0.23955610216795026,
+    "candidates": [
+      {
+        "params": "C=0.01",
+        "val_average_precision": 0.23955610216795026,
+        "val_roc_auc": 0.6995851449326211,
+        "fit_seconds": 19.58
+      },
+      {
+        "params": "C=0.001",
+        "val_average_precision": 0.1863116704251357,
+        "val_roc_auc": 0.6116623487682996,
+        "fit_seconds": 11.44
+      }
+    ],
+    "selected_on_label_condition": "clean"
+  },
+  "svm_linear": {
+    "params_dict": {
+      "C": 0.001
+    },
+    "params": "C=0.001",
+    "selected_on_seed": 42,
+    "selected_on_label_condition": "clean",
+    "val_average_precision": 0.2564705741135386,
+    "candidates": [
+      {
+        "params": "C=0.01",
+        "val_average_precision": 0.2389256238455922,
+        "val_roc_auc": 0.7219662514685377,
+        "fit_seconds": 7.51
+      },
+      {
+        "params": "C=0.001",
+        "val_average_precision": 0.2564705741135386,
+        "val_roc_auc": 0.743048947720839,
+        "fit_seconds": 3.46
+      }
+    ]
+  }
+}
